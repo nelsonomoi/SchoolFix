@@ -7,12 +7,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" >
+        android:layout_centerInParent="true">
 
         <ProgressBar
             android:id="@+id/id_pbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/colorBlack4"/>
 
         <TextView
             android:id="@+id/id_title"
@@ -20,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/please_wait"
+            android:textColor="@color/colorBlack4"
             android:layout_centerHorizontal="true" />
 
     </RelativeLayout>

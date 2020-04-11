@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorWhite"
-    android:theme="@style/RoyalExams"
+    android:theme="@style/AppTheme"
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -51,7 +51,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:padding="6dp">
                 </androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:theme="@style/RoyalExams"
+    android:theme="@style/AppTheme"
     android:orientation="vertical"
     tools:context=".Activities.PapersPage">
 
@@ -28,12 +28,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:fitsSystemWindows="true">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/papersrecyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:padding="4dp">
 
             </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>

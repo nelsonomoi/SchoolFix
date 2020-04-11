@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.schoolfix.CustomListeners.ClickListener;
-import com.example.schoolfix.CustomListeners.KidSubjectListener;
 import com.example.schoolfix.CustomListeners.OnItemClickListener;
 import com.example.schoolfix.CustomListeners.RecyclerItemOnClickListner;
 import com.example.schoolfix.FixAdapters.SubjectsAdapter;

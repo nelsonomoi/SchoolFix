@@ -2,8 +2,10 @@ package com.example.schoolfix.Networking;
 
 import com.example.schoolfix.Models.BodyParams.LoginParam;
 import com.example.schoolfix.Models.BodyParams.PapersBodyParam;
+import com.example.schoolfix.Models.BodyParams.QuestionBodyParam;
 import com.example.schoolfix.Models.Kids;
 import com.example.schoolfix.Models.PapersDTO;
+import com.example.schoolfix.Models.QuestionsDTO;
 import com.example.schoolfix.Models.ResponseModels.LoginResponse;
 import com.example.schoolfix.Models.BodyParams.SubjectBodyParam;
 import com.example.schoolfix.Models.ResponseModels.SubjectResponse;
@@ -43,5 +45,10 @@ public interface ApiInterface {
     @POST("papers")
     Call<List<PapersDTO>> getPapers(
             @Body PapersBodyParam papersBodyParam);
+
+    @Retry
+    @POST("questions")
+    Call<List<QuestionsDTO>> allQuestions(
+            @Body QuestionBodyParam questionBodyParam);
 
 }

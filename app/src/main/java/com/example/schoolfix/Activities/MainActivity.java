@@ -9,9 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.schoolfix.CustomListeners.ClickListener;
 import com.example.schoolfix.CustomListeners.OnItemClickListener;
-import com.example.schoolfix.CustomListeners.ParentKidListener;
 import com.example.schoolfix.CustomListeners.RecyclerItemOnClickListner;
 import com.example.schoolfix.FixAdapters.KidsAdapter;
 import com.example.schoolfix.Helpers.CustomProgressBar;
@@ -82,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
                @Override
                public void onFailure(Call<List<Kids>> call, Throwable t) {
-
+                   progressBar.getDialog().dismiss();
                }
            });
 

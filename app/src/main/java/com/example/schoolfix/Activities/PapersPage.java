@@ -53,6 +53,7 @@ public class PapersPage extends AppCompatActivity {
         call.enqueue(new Callback<List<PapersDTO>>() {
             @Override
             public void onResponse(Call<List<PapersDTO>> call, Response<List<PapersDTO>> response) {
+                progressBar.getDialog().dismiss();
                 if (response.isSuccessful()){
                     List<PapersDTO> papersDTOS=response.body();
                     displayPapers(papersDTOS);
