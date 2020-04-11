@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Royal Exams</string>
+
+    <!--    Login   -->
+    <string name="logintitle">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+
+    <string name="parentPageTitle"><u>Monitor Your Kid(s) Progress</u>.</string>
+
+    <string name="please_wait">Please Wait</string>
+</resources>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_kids"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="8dp"
+    android:backgroundTint="@color/colorWhite"
+    android:padding="4px">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4px">
+
+            <ImageView
+                android:id="@+id/account_circle"
+                android:layout_width="67dp"
+                android:layout_height="72dp"
+                android:layout_marginStart="16dp"
+                android:contentDescription="kid"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_account_circle_black_24dp" />
+
+            <TextView
+                android:id="@+id/lastname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="omoi"
+                android:textSize="14sp"
+                android:textColor="@color/colorBlack"
+                android:paddingLeft="6dp"
+                app:layout_constraintBottom_toBottomOf="@+id/firstname"
+                app:layout_constraintStart_toEndOf="@+id/firstname"
+                app:layout_constraintTop_toTopOf="@+id/firstname"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/firstname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="nelson"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@+id/school_name"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/school_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="St Peters High School"
+                android:textSize="12sp"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.113"
+                app:layout_constraintStart_toEndOf="@+id/account_circle"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/class_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="St peters Suneka High"
+                android:textSize="10dp"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintBottom_toBottomOf="@+id/account_circle"
+                app:layout_constraintStart_toStartOf="@+id/school_name" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+<!--</LinearLayout>-->
