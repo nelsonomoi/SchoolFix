@@ -7,7 +7,7 @@
     android:id="@+id/display"
     android:layout_gravity="center"
     android:fitsSystemWindows="true"
-    android:background="@color/colorBlack4"
+    android:background="@drawable/schoolfix_background"
     android:theme="@style/RoyalExams">
 
     <LinearLayout
@@ -82,7 +82,7 @@
             android:id="@+id/loginbtn"
             android:fontFamily="@font/roboto"
             app:cornerRadius="1000dp"
-            android:backgroundTint="@color/colorBlack3">
+            android:backgroundTint="@color/colorPrimaryDark">
 
         </com.google.android.material.button.MaterialButton>
 

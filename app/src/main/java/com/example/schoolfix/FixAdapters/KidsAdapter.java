@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,16 +54,22 @@ public class KidsAdapter extends RecyclerView.Adapter<KidsAdapter.KidsViewHolder
     }
 
     public class KidsViewHolder extends RecyclerView.ViewHolder{
-        CardView kidsLayout;
-        TextView firstname,lastname,school,kid_class;
+
+        @BindView(R.id.firstname)
+        TextView firstname;
+
+        @BindView(R.id.lastname)
+        TextView lastname;
+
+        @BindView(R.id.school_name)
+        TextView school;
+
+        @BindView(R.id.class_name)
+        TextView kid_class;
 
         public KidsViewHolder(View view) {
             super(view);
-            kidsLayout=view.findViewById(R.id.parent_kids);
-            firstname=view.findViewById(R.id.firstname);
-            lastname=view.findViewById(R.id.lastname);
-            school=view.findViewById(R.id.school_name);
-            kid_class=view.findViewById(R.id.class_name);
+            ButterKnife.bind(this,view);
         }
 
     }

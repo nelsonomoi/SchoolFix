@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.schoolfix.CustomListeners.OnItemClickListener;
@@ -19,8 +20,13 @@ import com.example.schoolfix.Networking.APIClient;
 import com.example.schoolfix.Networking.ApiInterface;
 import com.example.schoolfix.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,20 +35,21 @@ import retrofit2.Retrofit;
 public class MainActivity extends AppCompatActivity {
 
     private Context context=this;
-
+    CompositeDisposable disposable=new CompositeDisposable();
+    private KidsAdapter kidsAdapter;
+    private List<Kids> kidsList=new ArrayList<>();
     private static CustomProgressBar progressBar = new CustomProgressBar();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fetchUserDetails();
-
     }
 
     public void fetchUserDetails(){
         progressBar.show(context,"Loading.....");
-        Retrofit retrofit=APIClient.getAPIClient(context);
-        ApiInterface apiInterface=retrofit.create(ApiInterface.class);
+        Retrofit retrofitclient=APIClient.getAPIClient(context);
+        ApiInterface apiInterface=retrofitclient.create(ApiInterface.class);
 
         Call<User> call=apiInterface.User();
 
@@ -54,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                progressBar.getDialog().dismiss();
             }
         });
 
@@ -63,26 +70,35 @@ public class MainActivity extends AppCompatActivity {
 
     public void userController(User user){
         if (user.getUser_type() == 'P'){
-           Retrofit retrofit=APIClient.getAPIClient(context);
-           ApiInterface apiInterface=retrofit.create(ApiInterface.class);
+            setContentView(R.layout.parent_page);
+            final RecyclerView recyclerView = findViewById(R.id.recyclerview);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            kidsAdapter=new KidsAdapter(context,kidsList,R.layout.parent_kids_adapter);
+            recyclerView.setAdapter(kidsAdapter);
 
-           Call<List<Kids>> call=apiInterface.kids();
-           call.enqueue(new Callback<List<Kids>>() {
-               @Override
-               public void onResponse(Call<List<Kids>> call, Response<List<Kids>> response) {
-                   progressBar.getDialog().dismiss();
-                   List<Kids> kids=response.body();
-                   if (response.isSuccessful()){
-                       displayUserDetails(kids);
-                   }
+            final Intent intent=new Intent(context,KidPage.class);
 
-               }
+            recyclerView.addOnItemTouchListener(new RecyclerItemOnClickListner(context, recyclerView, new OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Bundle bundle=new Bundle();
+                    bundle.putString("KIDUSERNAME",kidsList.get(position).getKid_username());
+                    bundle.putString("CLASSID",kidsList.get(position).getClass_id());
+                    bundle.putString("SCHOOLID",kidsList.get(position).getSchool_id());
+                    bundle.putString("LASTNAME",kidsList.get(position).getKid_lastname());
+                    bundle.putString("FIRSTNAME",kidsList.get(position).getKid_firstname());
+                    bundle.putString("SCHOOLNAME",kidsList.get(position).getSchool_name());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
 
-               @Override
-               public void onFailure(Call<List<Kids>> call, Throwable t) {
-                   progressBar.getDialog().dismiss();
-               }
-           });
+                @Override
+                public void onItemLongClick(View view, int position) {
+
+                }
+            }));
+
+            fetchParentKids();
 
         }else{
            setContentView(R.layout.kid_page);
@@ -90,30 +106,31 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void displayUserDetails(final List<Kids> kids){
-        setContentView(R.layout.parent_page);
-        final Intent intent=new Intent(context,KidPage.class);
-        final RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new KidsAdapter(context,kids,R.layout.parent_kids_adapter));
-        recyclerView.addOnItemTouchListener(new RecyclerItemOnClickListner(context, recyclerView, new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Bundle bundle=new Bundle();
-                bundle.putString("KIDUSERNAME",kids.get(position).getKid_username());
-                bundle.putString("CLASSID",kids.get(position).getClass_id());
-                bundle.putString("SCHOOLID",kids.get(position).getSchool_id());
-                bundle.putString("LASTNAME",kids.get(position).getKid_lastname());
-                bundle.putString("FIRSTNAME",kids.get(position).getKid_firstname());
-                bundle.putString("SCHOOLNAME",kids.get(position).getSchool_name());
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
+    public void fetchParentKids(){
+        Retrofit retrofitclient=APIClient.getAPIClient(context);
+        ApiInterface apiInterface=retrofitclient.create(ApiInterface.class);
 
-            @Override
-            public void onItemLongClick(View view, int position) {
+        disposable.add(
+                apiInterface
+                    .kids()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith( new DisposableSingleObserver<List<Kids>>(){
 
-            }
-        }));
+                        @Override
+                        public void onSuccess(List<Kids> kids) {
+                            progressBar.getDialog().dismiss();
+                            kidsList.clear();
+                            kidsList.addAll(kids);
+                            kidsAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            progressBar.getDialog().dismiss();
+                            Log.e("ERROR","PARENT KIDS"+e.getMessage());
+                        }
+                    })
+        );
     }
 }

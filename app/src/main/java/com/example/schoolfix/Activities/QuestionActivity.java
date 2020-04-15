@@ -1,14 +1,16 @@
 package com.example.schoolfix.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.schoolfix.FixAdapters.QuestionsAdapter;
 import com.example.schoolfix.Helpers.CustomProgressBar;
 import com.example.schoolfix.Models.BodyParams.QuestionBodyParam;
 import com.example.schoolfix.Models.QuestionsDTO;
@@ -27,6 +29,7 @@ import retrofit2.Retrofit;
 public class QuestionActivity extends AppCompatActivity {
     private  Context context=this;
     private CustomProgressBar progressBar=new CustomProgressBar();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,11 +60,9 @@ public class QuestionActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<QuestionsDTO>> call, Response<List<QuestionsDTO>> response) {
                 progressBar.getDialog().dismiss();
-                if (response.isSuccessful()){
-                    
-                }else{
-                    Toast.makeText(QuestionActivity.this, "Loading Contents Failed.Royal Exams says Requested contents Not Found ", Toast.LENGTH_SHORT).show();
-                }
+                List<QuestionsDTO> questions=response.body();
+
+                displayQuestions(questions);
             }
 
             @Override
@@ -70,5 +71,13 @@ public class QuestionActivity extends AppCompatActivity {
                 Toast.makeText(context, "Oops!.Internal Server error", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void displayQuestions(List<QuestionsDTO> questions) {
+        final  RecyclerView recyclerView=findViewById(R.id.questionsrecyclerview);
+        QuestionsAdapter questionsAdapter=new QuestionsAdapter(context,questions,R.layout.questions_list);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(questionsAdapter);
     }
 }

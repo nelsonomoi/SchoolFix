@@ -4,14 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:background="?attr/colorPrimary">
+    android:background="@drawable/header_gradient">
 
     <TextView
         android:id="@+id/toolbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
-        android:textSize="28sp"
+        android:textAllCaps="true"
+        android:textSize="20sp"
         android:padding="4dp"
         android:textColor="@android:color/white"
         style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"

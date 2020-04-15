@@ -62,7 +62,7 @@ public class PapersPage extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<PapersDTO>> call, Throwable t) {
-
+                progressBar.getDialog().dismiss();
             }
         });
     }
@@ -76,8 +76,8 @@ public class PapersPage extends AppCompatActivity {
             public void onItemClick(View view, int position) {
                 Bundle bundle=new Bundle();
                 bundle.putString("PAPERNAME",papersDTOS.get(position).getPaperName());
-                bundle.putString("SCHOOLID",String.valueOf(papersDTOS.get(position).getClassId()));
-                bundle.putString("CLASSID",String.valueOf(papersDTOS.get(position).getSchoolId()));
+                bundle.putString("SCHOOLID",String.valueOf(papersDTOS.get(position).getSchoolId()));
+                bundle.putString("CLASSID",String.valueOf(papersDTOS.get(position).getClassId()));
                 bundle.putString("SUBJECTID",String.valueOf(papersDTOS.get(position).getSubjectId()));
                 bundle.putString("PAPERID",String.valueOf(papersDTOS.get(position).getPaperId()));
                 Intent intent=new Intent(context,QuestionActivity.class);

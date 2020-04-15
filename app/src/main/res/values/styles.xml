@@ -2,9 +2,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="windowActionBar">false</item>
-        <item name="colorPrimary">@color/colorBlack2</item>
-        <item name="colorPrimaryDark">@color/colorBlack3</item>
-        <item name="colorAccent">@color/colorWhite</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <!-- appbar -->
@@ -18,7 +18,7 @@
     <style name="RoyalExams" parent="@style/AppTheme">
         <item name="colorPrimary">@color/colorBlack2</item>
         <item name="colorPrimaryDark">@color/colorBlack3</item>
-        <item name="colorAccent">@color/colorWhite</item>
+        <item name="colorAccent">@color/colorBlack3</item>
     </style>
 
     <style name="NewDialog" parent="Theme.AppCompat.Dialog">
@@ -30,7 +30,7 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="android:backgroundDimEnabled">false</item>
-        <item name="android:background">@android:color/transparent</item>
+        <item name="android:background">@color/colorAccent</item>
     </style>
 
 </resources>

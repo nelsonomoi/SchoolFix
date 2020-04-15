@@ -14,6 +14,7 @@ import com.example.schoolfix.Models.User;
 
 import java.util.List;
 
+import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -22,7 +23,8 @@ public interface ApiInterface {
 
     @Retry
     @POST("login")
-    Call<LoginResponse> isValidUser(@Body LoginParam loginParam);
+//    Call<LoginResponse> isValidUser(@Body LoginParam loginParam);
+    Single<LoginResponse> isValidUser(@Body LoginParam loginParam);
 
     @Retry
     @POST("user")
@@ -30,7 +32,7 @@ public interface ApiInterface {
 
     @Retry
     @POST("user_details")
-    Call<List<Kids>> kids();
+    Single<List<Kids>> kids();
 
 //    @POST("subjects")
 //    Call<List<Subject>> getSubjects(

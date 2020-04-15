@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    <color name="colorPrimary">#6200EE</color>-->
-<!--    <color name="colorPrimaryDark">#3700B3</color>-->
-<!--    <color name="colorAccent">#03DAC5</color>-->
-
 <!--    color palletes -->
-    <color name="colorPrimary">#3D3E81</color>
-    <color name="colorPrimaryDark">#13121F</color>
-    <color name="colorAccent">#D2CED5</color>
+<!--    <color name="colorPrimary">#3D3E81</color>-->
+<!--    <color name="colorPrimaryDark">#13121F</color>-->
+<!--    <color name="colorAccent">#D2CED5</color>-->
     <color name="colorGrey">#f0e4e4</color>
-    <color name="colorWhite">#ffffff</color>
+<!--    <color name="colorWhite">#ffffff</color>-->
     <color name="colorBlack">#000000</color>
     <color name="colorBlack1">#6EA3CE</color>
     <color name="colorBlack2">#3D3E81</color>
     <color name="colorBlack3">#13121F</color>
     <color name="colorBlack4">#8987CB</color>
     <color name="colorBlack5">#D2CED5</color>
+
+<!--    quiz app design colors-->
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorAccent">#6563a4</color>
+    <color name="colorPrimary">#8c88ff</color>
+    <color name="colorPrimaryDark">#6563a4</color>
+    <color name="colorMuted">#ff9a6922</color>
 
 </resources>

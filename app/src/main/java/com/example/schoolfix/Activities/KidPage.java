@@ -65,7 +65,6 @@ public class KidPage extends AppCompatActivity {
                         List<SubjectResponse> subjectResponseList=response.body();
                         displaySubjects(subjectResponseList);
                     }
-
             }
 
             @Override
