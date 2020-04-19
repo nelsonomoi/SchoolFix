@@ -96,13 +96,10 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        loginbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressBar.show(context,"Authenticating....");
-                ValidateUser(edemail.getText().toString().trim(),edpassword.getText().toString().trim());
+        loginbtn.setOnClickListener(v -> {
+            progressBar.show(context,"Authenticating....");
+            ValidateUser(edemail.getText().toString().trim(),edpassword.getText().toString().trim());
 //                loginbtn.setEnabled(false);
-            }
         });
 
     }

@@ -80,6 +80,7 @@ public class PapersPage extends AppCompatActivity {
                 bundle.putString("CLASSID",String.valueOf(papersDTOS.get(position).getClassId()));
                 bundle.putString("SUBJECTID",String.valueOf(papersDTOS.get(position).getSubjectId()));
                 bundle.putString("PAPERID",String.valueOf(papersDTOS.get(position).getPaperId()));
+                bundle.putString("KIDUSERNAME",getIntent().getExtras().getString("KIDUSERNAME"));
                 Intent intent=new Intent(context,QuestionActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);

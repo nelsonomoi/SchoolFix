@@ -36,6 +36,7 @@
             </androidx.recyclerview.widget.RecyclerView>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/submit_answers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_states"
@@ -46,7 +47,9 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="Submit Answers">
+                android:text="Submit Answers"
+                android:textSize="18dp"
+                android:onClick="submitAnswers">
             </com.google.android.material.button.MaterialButton>
         </LinearLayout>
     </ScrollView>

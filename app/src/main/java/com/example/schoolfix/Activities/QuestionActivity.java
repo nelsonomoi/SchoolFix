@@ -5,19 +5,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.schoolfix.FixAdapters.QuestionsAdapter;
 import com.example.schoolfix.Helpers.CustomProgressBar;
+import com.example.schoolfix.Models.BodyParams.QueryDTO;
 import com.example.schoolfix.Models.BodyParams.QuestionBodyParam;
+import com.example.schoolfix.Models.BodyParams.SubmitDTO;
 import com.example.schoolfix.Models.QuestionsDTO;
+import com.example.schoolfix.Models.ResponseModels.ResultResponseDTO;
 import com.example.schoolfix.Networking.APIClient;
 import com.example.schoolfix.Networking.ApiInterface;
 import com.example.schoolfix.R;
+import com.google.android.material.button.MaterialButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -29,11 +37,15 @@ import retrofit2.Retrofit;
 public class QuestionActivity extends AppCompatActivity {
     private  Context context=this;
     private CustomProgressBar progressBar=new CustomProgressBar();
+    private  MaterialButton submitBtn;
+
+    private SubmitDTO submitDTO=new SubmitDTO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_activity);
+
         Bundle bundle=getIntent().getExtras();
 
         TextView app_name=findViewById(R.id.toolbar_title);
@@ -47,6 +59,8 @@ public class QuestionActivity extends AppCompatActivity {
         );
         fetchQuestions(questionBodyParam);
         progressBar.show(context,"Loading Questions......");
+        submitBtn=findViewById(R.id.submit_answers);
+
     }
 
     private void fetchQuestions(QuestionBodyParam questionBodyParam) {
@@ -79,5 +93,53 @@ public class QuestionActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(questionsAdapter);
+
+        submitBtn.setOnClickListener(v -> {
+            sendAnwers(questionsAdapter);
+        });
     }
+
+    public  void sendAnwers(QuestionsAdapter questionsAdapter){
+        submitDTO=questionsAdapter.getResult();
+        submitDTO.setSchoolId(Integer.valueOf(getIntent().getExtras().getString("SCHOOLID")));
+        submitDTO.setClassId(Integer.valueOf(getIntent().getExtras().getString("CLASSID")));
+        submitDTO.setSubjectId(Integer.valueOf(getIntent().getExtras().getString("SUBJECTID")));
+        submitDTO.setPaperId(Integer.valueOf(getIntent().getExtras().getString("PAPERID")));
+        submitDTO.setKidUsername(getIntent().getExtras().getString("KIDUSERNAME"));
+
+        String school_id=getIntent().getExtras().getString("SCHOOLID");
+        String class_id=getIntent().getExtras().getString("CLASSID");
+        String paper_id=getIntent().getExtras().getString("PAPERID");
+        String subject_id=getIntent().getExtras().getString("SUBJECTID");
+        String kid_username=getIntent().getExtras().getString("KIDUSERNAME");
+        String queryDTOS=submitDTO.getQuery().toString();
+        String answerDTOS=submitDTO.getAnswer().toString();
+
+
+        progressBar.show(context,"Please Wait");
+
+        Retrofit retrofit=APIClient.getAPIClient(context);
+
+        ApiInterface apiInterface=retrofit.create(ApiInterface.class);
+
+        Call<ResultResponseDTO> call=apiInterface.get_results(
+                school_id,class_id,subject_id,paper_id,kid_username,queryDTOS,answerDTOS
+        );
+
+        call.enqueue(new Callback<ResultResponseDTO>() {
+            @Override
+            public void onResponse(Call<ResultResponseDTO> call, Response<ResultResponseDTO> response) {
+                progressBar.getDialog().dismiss();
+                Log.v("Check",String.valueOf(response.code()));
+
+            }
+
+            @Override
+            public void onFailure(Call<ResultResponseDTO> call, Throwable t) {
+                progressBar.getDialog().dismiss();
+            }
+        });
+
+    }
+
 }
