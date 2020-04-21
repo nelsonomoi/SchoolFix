@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.schoolfix.FixAdapters.QuestionsAdapter;
+import com.example.schoolfix.FixAdapters.ResultsAdapter;
 import com.example.schoolfix.Helpers.CustomProgressBar;
 import com.example.schoolfix.Models.BodyParams.QueryDTO;
 import com.example.schoolfix.Models.BodyParams.QuestionBodyParam;
@@ -25,6 +27,7 @@ import com.example.schoolfix.Networking.ApiInterface;
 import com.example.schoolfix.R;
 import com.google.android.material.button.MaterialButton;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,7 +98,18 @@ public class QuestionActivity extends AppCompatActivity {
         recyclerView.setAdapter(questionsAdapter);
 
         submitBtn.setOnClickListener(v -> {
-            sendAnwers(questionsAdapter);
+//            progressBar.show(context,"Submiting Results....");
+            Bundle bundle=new Bundle();
+            bundle.putString("SCHOOLID",getIntent().getExtras().getString("SCHOOLID"));
+            bundle.putString("CLASSID",getIntent().getExtras().getString("CLASSID"));
+            bundle.putString("SUBJECTID",getIntent().getExtras().getString("SUBJECTID"));
+            bundle.putString("PAPERID",getIntent().getExtras().getString("PAPERID"));
+            bundle.putString("KIDUSERNAME",getIntent().getExtras().getString("KIDUSERNAME"));
+            bundle.putSerializable("questions", (Serializable) questions);
+            Intent resultactivity=new Intent(context,ResultsActivity.class);
+            resultactivity.putExtras(bundle);
+            startActivity(resultactivity);
+//            sendAnwers(questionsAdapter);
         });
     }
 
@@ -107,14 +121,6 @@ public class QuestionActivity extends AppCompatActivity {
         submitDTO.setPaperId(Integer.valueOf(getIntent().getExtras().getString("PAPERID")));
         submitDTO.setKidUsername(getIntent().getExtras().getString("KIDUSERNAME"));
 
-        String school_id=getIntent().getExtras().getString("SCHOOLID");
-        String class_id=getIntent().getExtras().getString("CLASSID");
-        String paper_id=getIntent().getExtras().getString("PAPERID");
-        String subject_id=getIntent().getExtras().getString("SUBJECTID");
-        String kid_username=getIntent().getExtras().getString("KIDUSERNAME");
-        String queryDTOS=submitDTO.getQuery().toString();
-        String answerDTOS=submitDTO.getAnswer().toString();
-
 
         progressBar.show(context,"Please Wait");
 
@@ -122,16 +128,16 @@ public class QuestionActivity extends AppCompatActivity {
 
         ApiInterface apiInterface=retrofit.create(ApiInterface.class);
 
-        Call<ResultResponseDTO> call=apiInterface.get_results(
-                school_id,class_id,subject_id,paper_id,kid_username,queryDTOS,answerDTOS
-        );
+        Call<ResultResponseDTO> call=apiInterface.get_results(submitDTO);
 
         call.enqueue(new Callback<ResultResponseDTO>() {
             @Override
             public void onResponse(Call<ResultResponseDTO> call, Response<ResultResponseDTO> response) {
                 progressBar.getDialog().dismiss();
-                Log.v("Check",String.valueOf(response.code()));
-
+                List<ResultResponseDTO> responseDTO= (List<ResultResponseDTO>) response.body();
+                if (response.isSuccessful()){
+                    displyaResults(responseDTO);
+                }
             }
 
             @Override
@@ -140,6 +146,13 @@ public class QuestionActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public  void displyaResults(List<ResultResponseDTO> responseDTO){
+        final  RecyclerView recyclerView=findViewById(R.id.questionsrecyclerview);
+        ResultsAdapter resultsAdapter=new ResultsAdapter(context,responseDTO,R.layout.questions_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(resultsAdapter);
     }
 
 }

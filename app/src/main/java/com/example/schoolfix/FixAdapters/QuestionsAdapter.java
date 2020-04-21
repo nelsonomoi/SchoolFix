@@ -1,6 +1,7 @@
 package com.example.schoolfix.FixAdapters;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,22 +19,30 @@ import com.example.schoolfix.Models.BodyParams.SubmitDTO;
 import com.example.schoolfix.Models.OptionsDTO;
 import com.example.schoolfix.Models.QuestionsDTO;
 import com.example.schoolfix.R;
+import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
-public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.QuestionsViewHolder> {
+public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.QuestionsViewHolder>{
 
     private Context context;
     private List<QuestionsDTO> questionsDTOList;
     private List<AnswerDTO> answerDTOList=new ArrayList<>();
     private List<QueryDTO> queryDTOList=new ArrayList<>();
     private SubmitDTO submitDTO=new SubmitDTO();
-    private QueryDTO queryDTO=new QueryDTO();
-    private AnswerDTO answerDTO=new AnswerDTO();
+    private QueryDTO queryDTO;
+    private AnswerDTO answerDTO;
     private int rowLayout;
+
+    HashMap<String,String> answerMap=new HashMap<>();
+    HashMap<String,String> queryMap=new HashMap<>();
 
     public QuestionsAdapter(Context context, List<QuestionsDTO> questionsDTOList, int rowLayout) {
         this.context = context;
@@ -72,23 +81,39 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
 
         holder.selected.setOnCheckedChangeListener((group, checkedId) -> {
             View radioButton=group.findViewById(checkedId);
-
             int option_id=group.indexOfChild(radioButton) + 1;
             int question_id=questionsDTOList.get(position).getQuestionId();
 
-            this.queryDTO.setId(String.valueOf(position));
-            this.queryDTO.setQuestion_id(String.valueOf(question_id));
-            this.queryDTOList.add(queryDTO);
+//            this.queryDTO.setId(String.valueOf(question_id-1));
+//            this.queryDTO.setQuestion_id(String.valueOf(question_id));
+//            this.queryDTOList.add(queryDTO);
 
-            this.answerDTO.setOption_id(String.valueOf(option_id));
-            this.answerDTO.setQuestion_id(String.valueOf(question_id));
-            this.answerDTOList.add(answerDTO);
+            queryMap.put(String.valueOf(question_id-1),String.valueOf(question_id));
+            answerMap.put(String.valueOf(question_id),String.valueOf(option_id));
+
+//            this.answerDTO.setOption_id(String.valueOf(option_id));
+//            this.answerDTO.setQuestion_id(String.valueOf(question_id));
+//            this.answerDTOList.add(answerDTO);
 
         });
 
     }
 
     public  SubmitDTO getResult(){
+        for (Map.Entry<String,String> entry : queryMap.entrySet()){
+            this.queryDTO=new QueryDTO();
+            this.queryDTO.setId(entry.getKey());
+            this.queryDTO.setQuestion_id(entry.getValue());
+            this.queryDTOList.add(queryDTO);
+        }
+
+        for (Map.Entry<String,String> entry: answerMap.entrySet()){
+            this.answerDTO=new AnswerDTO();
+            this.answerDTO.setQuestion_id(entry.getKey());
+            this.answerDTO.setOption_id(entry.getValue());
+            this.answerDTOList.add(answerDTO);
+        }
+
         this.submitDTO.setQuery(this.queryDTOList);
         this.submitDTO.setAnswer(this.answerDTOList);
         return this.submitDTO;
@@ -99,7 +124,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
         return questionsDTOList.size();
     }
 
-    public class QuestionsViewHolder extends RecyclerView.ViewHolder {
+    public class QuestionsViewHolder extends RecyclerView.ViewHolder{
         TextView question;
         RadioGroup selected;
         RadioButton answerOption1,answerOption2,answerOption3,answerOption4;
