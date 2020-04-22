@@ -59,6 +59,15 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ResultVi
             }else options[i] =optionsDTOS.get(i).getOptionDescription();
         }
 
+        for (int i = 0; i <optionsDTOS.size() ; i++){
+            if (i == result.get(0).getSelectedOptionId()-1){
+                holder.selected.check(holder.selected.getChildAt(i).getId());
+            }
+
+            if (i == result.get(0).getSelectedOptionId()-1 && result.get(0).getSelectedOptionId() != result.get(0).getCorrectOptionId()){
+                options[i] += Html.fromHtml(context.getResources().getString(R.string.wrong_answer));
+            }
+        }
 
         if (optionsDTOS.size() == 4){
             holder.answerOption1.setText(options[0]);
@@ -66,6 +75,8 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ResultVi
             holder.answerOption3.setText(options[2]);
             holder.answerOption4.setText(options[3]);
         }
+
+        holder.selected.setEnabled(false);
 
 
     }

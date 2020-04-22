@@ -10,4 +10,5 @@
 
     <string name="please_wait">Please Wait</string>
     <string name="correct_answer"><![CDATA[<b><font color=#0000FF>| Correct </font></b>]]></string>
+    <string name="wrong_answer"><![CDATA[<b><font color=#0000FF>| Wrong </font></b>]]></string>
 </resources>
