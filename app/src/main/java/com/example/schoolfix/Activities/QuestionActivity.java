@@ -40,18 +40,23 @@ import retrofit2.Retrofit;
 public class QuestionActivity extends AppCompatActivity {
     private  Context context=this;
     private CustomProgressBar progressBar=new CustomProgressBar();
-    private  MaterialButton submitBtn;
+
 
     private SubmitDTO submitDTO=new SubmitDTO();
+
+    private  MaterialButton submitBtn;
+    private RecyclerView recyclerView;
+    private TextView app_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_activity);
+        recyclerView=findViewById(R.id.questionsrecyclerview);
 
         Bundle bundle=getIntent().getExtras();
 
-        TextView app_name=findViewById(R.id.toolbar_title);
+        app_name=findViewById(R.id.toolbar_title);
         app_name.setText(bundle.getString("PAPERNAME"));
 
         QuestionBodyParam questionBodyParam=new QuestionBodyParam(
@@ -91,29 +96,19 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     public void displayQuestions(List<QuestionsDTO> questions) {
-        final  RecyclerView recyclerView=findViewById(R.id.questionsrecyclerview);
         QuestionsAdapter questionsAdapter=new QuestionsAdapter(context,questions,R.layout.questions_list);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(questionsAdapter);
 
+        submitDTO=questionsAdapter.getResult();
+
         submitBtn.setOnClickListener(v -> {
-//            progressBar.show(context,"Submiting Results....");
-            Bundle bundle=new Bundle();
-            bundle.putString("SCHOOLID",getIntent().getExtras().getString("SCHOOLID"));
-            bundle.putString("CLASSID",getIntent().getExtras().getString("CLASSID"));
-            bundle.putString("SUBJECTID",getIntent().getExtras().getString("SUBJECTID"));
-            bundle.putString("PAPERID",getIntent().getExtras().getString("PAPERID"));
-            bundle.putString("KIDUSERNAME",getIntent().getExtras().getString("KIDUSERNAME"));
-            bundle.putSerializable("questions", (Serializable) questions);
-            Intent resultactivity=new Intent(context,ResultsActivity.class);
-            resultactivity.putExtras(bundle);
-            startActivity(resultactivity);
-//            sendAnwers(questionsAdapter);
+            sendAnwers(questionsAdapter,questions);
         });
     }
 
-    public  void sendAnwers(QuestionsAdapter questionsAdapter){
+    public  void sendAnwers(QuestionsAdapter questionsAdapter,List<QuestionsDTO> questions){
         submitDTO=questionsAdapter.getResult();
         submitDTO.setSchoolId(Integer.valueOf(getIntent().getExtras().getString("SCHOOLID")));
         submitDTO.setClassId(Integer.valueOf(getIntent().getExtras().getString("CLASSID")));
@@ -121,6 +116,8 @@ public class QuestionActivity extends AppCompatActivity {
         submitDTO.setPaperId(Integer.valueOf(getIntent().getExtras().getString("PAPERID")));
         submitDTO.setKidUsername(getIntent().getExtras().getString("KIDUSERNAME"));
 
+        questions.clear();
+        questionsAdapter.notifyDataSetChanged();
 
         progressBar.show(context,"Please Wait");
 
@@ -128,31 +125,32 @@ public class QuestionActivity extends AppCompatActivity {
 
         ApiInterface apiInterface=retrofit.create(ApiInterface.class);
 
-        Call<ResultResponseDTO> call=apiInterface.get_results(submitDTO);
+        Call<List<ResultResponseDTO>> call=apiInterface.get_results(submitDTO);
 
-        call.enqueue(new Callback<ResultResponseDTO>() {
-            @Override
-            public void onResponse(Call<ResultResponseDTO> call, Response<ResultResponseDTO> response) {
-                progressBar.getDialog().dismiss();
-                List<ResultResponseDTO> responseDTO= (List<ResultResponseDTO>) response.body();
-                if (response.isSuccessful()){
-                    displyaResults(responseDTO);
-                }
-            }
+       call.enqueue(new Callback<List<ResultResponseDTO>>() {
+           @Override
+           public void onResponse(Call<List<ResultResponseDTO>> call, Response<List<ResultResponseDTO>> response) {
+               progressBar.getDialog().dismiss();
+               List<ResultResponseDTO> responseDTOList=response.body();
+               if (response.isSuccessful()){
+                   displyResults(responseDTOList);
+               }
+           }
 
-            @Override
-            public void onFailure(Call<ResultResponseDTO> call, Throwable t) {
-                progressBar.getDialog().dismiss();
-            }
-        });
+           @Override
+           public void onFailure(Call<List<ResultResponseDTO>> call, Throwable t) {
+               progressBar.getDialog().dismiss();
+           }
+       });
 
     }
 
-    public  void displyaResults(List<ResultResponseDTO> responseDTO){
-        final  RecyclerView recyclerView=findViewById(R.id.questionsrecyclerview);
-        ResultsAdapter resultsAdapter=new ResultsAdapter(context,responseDTO,R.layout.questions_list);
+    public  void displyResults(List<ResultResponseDTO> responseDTO){
+        submitBtn.setVisibility(View.GONE);
+        ResultsAdapter resultsAdapter=new ResultsAdapter(context,responseDTO,R.layout.results_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(resultsAdapter);
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 
 }

@@ -9,4 +9,5 @@
     <string name="parentPageTitle"><u>Monitor Your Kid(s) Progress</u>.</string>
 
     <string name="please_wait">Please Wait</string>
+    <string name="correct_answer"><![CDATA[<b><font color=#0000FF>| Correct </font></b>]]></string>
 </resources>

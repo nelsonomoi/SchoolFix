@@ -1,6 +1,8 @@
 package com.example.schoolfix.FixAdapters;
 
 import android.content.Context;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schoolfix.Models.ResponseModels.OptionsDTO;
 import com.example.schoolfix.Models.ResponseModels.ResultResponseDTO;
+import com.example.schoolfix.Models.ResponseModels.ResultsDTO;
 import com.example.schoolfix.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ResultViewHolder> {
@@ -42,14 +44,21 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ResultVi
     @Override
     public void onBindViewHolder(@NonNull ResultsAdapter.ResultViewHolder holder, int position) {
         List<OptionsDTO> optionsDTOS=new ArrayList<>(resultResponseDTOList.get(position).getOptions());
+        List<ResultsDTO> result=new ArrayList<>(resultResponseDTOList.get(position).getResults());
 
         Collections.sort(optionsDTOS, (o1, o2) -> o1.getOptionDescription().compareTo(o2.getOptionDescription()));
+
+        String correct=context.getResources().getString(R.string.correct_answer);
+        holder.question.setText(String.valueOf(resultResponseDTOList.get(position).getQuestionId())+". "+resultResponseDTOList.get(position).getQuestion());
 
         String[] options= new String[4];
 
         for (int i = 0; i < optionsDTOS.size() ; i++) {
-            options[i] =optionsDTOS.get(i).getOptionDescription();
+            if (i == result.get(0).getCorrectOptionId() -1 ){
+                options[i] =optionsDTOS.get(i).getOptionDescription() + " "+Html.fromHtml(correct);
+            }else options[i] =optionsDTOS.get(i).getOptionDescription();
         }
+
 
         if (optionsDTOS.size() == 4){
             holder.answerOption1.setText(options[0]);
@@ -57,6 +66,8 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ResultVi
             holder.answerOption3.setText(options[2]);
             holder.answerOption4.setText(options[3]);
         }
+
+
     }
 
     @Override
@@ -71,12 +82,12 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ResultVi
 
         public ResultViewHolder(@NonNull View itemView) {
             super(itemView);
-            selected=itemView.findViewById(R.id.option_group);
-            question=itemView.findViewById(R.id.question);
-            answerOption1=itemView.findViewById(R.id.answer_option);
-            answerOption2=itemView.findViewById(R.id.answer_option2);
-            answerOption3=itemView.findViewById(R.id.answer_option3);
-            answerOption4=itemView.findViewById(R.id.answer_option4);
+            selected=itemView.findViewById(R.id.option_group1);
+            question=itemView.findViewById(R.id.question1);
+            answerOption1=itemView.findViewById(R.id.answer_option1);
+            answerOption2=itemView.findViewById(R.id.answer_option21);
+            answerOption3=itemView.findViewById(R.id.answer_option31);
+            answerOption4=itemView.findViewById(R.id.answer_option41);
         }
     }
 }

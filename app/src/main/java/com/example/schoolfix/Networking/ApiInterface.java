@@ -55,5 +55,5 @@ public interface ApiInterface {
 
     @Retry
     @POST("submit_results")
-    Call<ResultResponseDTO>  get_results(@Body SubmitDTO submitDTO);
+    Call<List<ResultResponseDTO>>  get_results(@Body SubmitDTO submitDTO);
 }

@@ -43,10 +43,12 @@ public class ResultsActivity extends AppCompatActivity {
         app_name.setText("Score");
 
         Bundle bundle=getIntent().getExtras();
-        List<QuestionsDTO> questions= (List<QuestionsDTO>) bundle.getSerializable("questions");
-        QuestionsAdapter questionsAdapter=new QuestionsAdapter(getApplicationContext(),questions,R.layout.questions_list);
+        submitDTO= (SubmitDTO) bundle.getSerializable("submitBtn");
+        Log.v("Check",submitDTO.getAnswer().toString());
+//        List<QuestionsDTO> questions= (List<QuestionsDTO>) bundle.getSerializable("questions");
+//        QuestionsAdapter questionsAdapter=new QuestionsAdapter(getApplicationContext(),questions,R.layout.questions_list);
 
-        submitDTO=questionsAdapter.getResult();
+//        submitDTO=questionsAdapter.getResult();
         submitDTO.setSchoolId(Integer.valueOf(getIntent().getExtras().getString("SCHOOLID")));
         submitDTO.setClassId(Integer.valueOf(getIntent().getExtras().getString("CLASSID")));
         submitDTO.setSubjectId(Integer.valueOf(getIntent().getExtras().getString("SUBJECTID")));
@@ -59,28 +61,28 @@ public class ResultsActivity extends AppCompatActivity {
 
         ApiInterface apiInterface=retrofit.create(ApiInterface.class);
 
-        Call<ResultResponseDTO> call=apiInterface.get_results(submitDTO);
+        Call<List<ResultResponseDTO>> call=apiInterface.get_results(submitDTO);
 
-        call.enqueue(new Callback<ResultResponseDTO>() {
-            @Override
-            public void onResponse(Call<ResultResponseDTO> call, Response<ResultResponseDTO> response) {
-                progressBar.getDialog().dismiss();
-                List<ResultResponseDTO> responseDTO= (List<ResultResponseDTO>) response.body();
-                if (response.isSuccessful()){
-                    displyaResults(responseDTO);
-                }
-            }
+       call.enqueue(new Callback<List<ResultResponseDTO>>() {
+           @Override
+           public void onResponse(Call<List<ResultResponseDTO>> call, Response<List<ResultResponseDTO>> response) {
+               progressBar.getDialog().dismiss();
+               List<ResultResponseDTO> resultResponseDTOList=response.body();
+               if (response.isSuccessful()){
+                   displyaResults(resultResponseDTOList);
+               }
+           }
 
-            @Override
-            public void onFailure(Call<ResultResponseDTO> call, Throwable t) {
-                progressBar.getDialog().dismiss();
-            }
-        });
+           @Override
+           public void onFailure(Call<List<ResultResponseDTO>> call, Throwable t) {
+               progressBar.getDialog().dismiss();
+           }
+       });
     }
 
     public  void displyaResults(List<ResultResponseDTO> responseDTO){
         final RecyclerView recyclerView=findViewById(R.id.resultsrecycler);
-        ResultsAdapter resultsAdapter=new ResultsAdapter(context,responseDTO,R.layout.questions_list);
+        ResultsAdapter resultsAdapter=new ResultsAdapter(context,responseDTO,R.layout.results_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(resultsAdapter);
     }

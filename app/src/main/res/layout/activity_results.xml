@@ -32,24 +32,8 @@
                 android:id="@+id/resultsrecycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
             </androidx.recyclerview.widget.RecyclerView>
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/submit_answers"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:background="@drawable/button_states"-->
-<!--                android:backgroundTint="@color/colorAccent"-->
-<!--                android:textColor="@color/colorWhite"-->
-<!--                android:padding="8dp"-->
-<!--                android:layout_marginTop="16dp"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginEnd="16dp"-->
-<!--                android:fontFamily="@font/roboto_bold"-->
-<!--                android:text="Submit Answers"-->
-<!--                android:textSize="18dp"-->
-<!--                android:onClick="submitAnswers">-->
-<!--            </com.google.android.material.button.MaterialButton>-->
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
