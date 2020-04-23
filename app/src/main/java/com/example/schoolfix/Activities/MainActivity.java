@@ -1,6 +1,9 @@
 package com.example.schoolfix.Activities;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
 
 import com.example.schoolfix.CustomListeners.OnItemClickListener;
 import com.example.schoolfix.CustomListeners.RecyclerItemOnClickListner;
@@ -19,6 +23,8 @@ import com.example.schoolfix.Models.User;
 import com.example.schoolfix.Networking.APIClient;
 import com.example.schoolfix.Networking.ApiInterface;
 import com.example.schoolfix.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +46,28 @@ public class MainActivity extends AppCompatActivity {
     private List<Kids> kidsList=new ArrayList<>();
     private static CustomProgressBar progressBar = new CustomProgressBar();
 
+
+    DrawerLayout mdrawer;
+    ActionBarDrawerToggle toggle;
+
+    FloatingActionButton add_kid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.parent_page);
+
+        Toolbar toolbar=findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+       add_kid=findViewById(R.id.add_kid);
+
+        add_kid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context,AddKid.class);
+                startActivity(intent);
+            }
+        });
         fetchUserDetails();
     }
 
@@ -65,12 +90,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     public void userController(User user){
         if (user.getUser_type() == 'P'){
-            setContentView(R.layout.parent_page);
             final RecyclerView recyclerView = findViewById(R.id.recyclerview);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             kidsAdapter=new KidsAdapter(context,kidsList,R.layout.parent_kids_adapter);

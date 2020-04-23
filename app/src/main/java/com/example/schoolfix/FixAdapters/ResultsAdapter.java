@@ -49,7 +49,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ResultVi
         Collections.sort(optionsDTOS, (o1, o2) -> o1.getOptionDescription().compareTo(o2.getOptionDescription()));
 
         String correct=context.getResources().getString(R.string.correct_answer);
-        holder.question.setText(String.valueOf(resultResponseDTOList.get(position).getQuestionId())+". "+resultResponseDTOList.get(position).getQuestion());
+        holder.question.setText(resultResponseDTOList.get(position).getQuestionId() +". "+resultResponseDTOList.get(position).getQuestion());
 
         String[] options= new String[4];
 
@@ -75,8 +75,6 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ResultVi
             holder.answerOption3.setText(options[2]);
             holder.answerOption4.setText(options[3]);
         }
-
-        holder.selected.setEnabled(false);
 
 
     }

@@ -12,8 +12,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
-    final  static String BASE_URL="http://be32aeab.ngrok.io/api/";
-//    final static String BASE_URL="https://royalexams.herokuapp.com/api/";
+//    final  static String BASE_URL="http://be32aeab.ngrok.io/api/";
+    final static String BASE_URL="https://royalexams.herokuapp.com/api/";
 
     public static Retrofit getAPIClient(Context context){
         HttpLoggingInterceptor interceptor=new HttpLoggingInterceptor();

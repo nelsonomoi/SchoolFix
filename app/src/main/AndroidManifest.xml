@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.ResultsActivity"></activity>
+        <activity android:name=".Activities.AddKid"></activity>
+        <activity android:name=".Activities.ResultsActivity" />
         <activity android:name=".Activities.QuestionActivity" />
         <activity android:name=".Activities.PapersPage" />
         <activity android:name=".Activities.KidPage" />
