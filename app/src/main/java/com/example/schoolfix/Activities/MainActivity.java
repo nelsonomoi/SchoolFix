@@ -51,15 +51,15 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle toggle;
 
     FloatingActionButton add_kid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.parent_page);
 
         Toolbar toolbar=findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-       add_kid=findViewById(R.id.add_kid);
+        add_kid=findViewById(R.id.add_kid);
 
         add_kid.setOnClickListener(new View.OnClickListener() {
             @Override

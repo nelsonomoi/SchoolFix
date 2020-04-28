@@ -7,8 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    android:orientation="vertical"
-    android:theme="@style/AppTheme">
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -34,7 +33,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/colorWhite"
-        android:theme="@style/AppTheme"
         android:fitsSystemWindows="true">
 
         <TextView

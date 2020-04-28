@@ -14,4 +14,14 @@
 
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
+
+<!--    Kid details-->
+    <string name="firstname">Nelson</string>
+    <string name="lastname">Rasugu</string>
+    <string name="name_of_school">Josu Academy</string>
+    <string name="class_in">Class six</string>
+    <string name="location">Nairobi</string>
+    <string name="parent_id">Parent Username</string>
+    <string name="addkid"> ADD KID </string>
+
 </resources>

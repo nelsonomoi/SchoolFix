@@ -20,4 +20,7 @@
     <color name="colorPrimaryDark">#6563a4</color>
     <color name="colorMuted">#ff9a6922</color>
 
+<!--    -->
+    <color name="snow">#FFFAFA</color>
+
 </resources>

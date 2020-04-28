@@ -1,6 +1,7 @@
 package com.example.schoolfix.Networking;
 
 
+import com.example.schoolfix.Models.BodyParams.KidBodyParam;
 import com.example.schoolfix.Models.BodyParams.LoginParam;
 import com.example.schoolfix.Models.BodyParams.PapersBodyParam;
 import com.example.schoolfix.Models.BodyParams.QuestionBodyParam;
@@ -18,6 +19,7 @@ import com.example.schoolfix.Models.User;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -56,4 +58,9 @@ public interface ApiInterface {
     @Retry
     @POST("submit_results")
     Call<List<ResultResponseDTO>>  get_results(@Body SubmitDTO submitDTO);
+
+    @Retry
+    @POST("register")
+    Call<List<Kids>> addKid(
+            @Body KidBodyParam kidBodyParam);
 }

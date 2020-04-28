@@ -9,7 +9,7 @@
     android:layout_marginLeft="6dp"
     android:layout_marginRight="6dp"
     app:cardElevation="4dp"
-    android:backgroundTint="@color/colorWhite"
+    android:backgroundTint="@color/snow"
     android:padding="4px">
 
         <androidx.constraintlayout.widget.ConstraintLayout
