@@ -11,13 +11,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.schoolfix.Helpers.CustomProgressBar;
 import com.example.schoolfix.Models.BodyParams.KidBodyParam;
 import com.example.schoolfix.Models.Kids;
 import com.example.schoolfix.Networking.APIClient;
 import com.example.schoolfix.Networking.ApiInterface;
 import com.example.schoolfix.R;
 
+import org.json.JSONObject;
+
 import java.util.List;
+import java.util.Random;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
@@ -37,9 +41,10 @@ public class AddKid extends AppCompatActivity {
     Context context=this;
     CompositeDisposable disposable;
     KidBodyParam kidBodyParam=new KidBodyParam();
+    CustomProgressBar customProgressBar=new CustomProgressBar();
 
     private    Button   addkid;
-    private EditText edfirstname,edlastname,edclassname,edschoolname,edlocation;
+    private EditText edfirstname,edlastname,edclassname,edschoolname,edlocation,edemail,edidno,edphoneno,edcontactno;
 
 
     @Override
@@ -53,6 +58,10 @@ public class AddKid extends AppCompatActivity {
         edschoolname=findViewById(R.id.schoolname);
         edlocation=findViewById(R.id.location);
         addkid=findViewById(R.id.addkid);
+        edemail=findViewById(R.id.email_address);
+        edidno=findViewById(R.id.id_number);
+        edphoneno=findViewById(R.id.phone_number);
+        edcontactno=findViewById(R.id.contact_mobile_no);
 
         addkid.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,22 +92,34 @@ public class AddKid extends AppCompatActivity {
     }
 
     public void postKid(){
-        kidBodyParam.setFirstname(edfirstname.getText().toString().trim());
-        kidBodyParam.setLastname(edlastname.getText().toString().trim());
-        kidBodyParam.setClassname(edclassname.getText().toString().trim());
-        kidBodyParam.setSchoolname(edschoolname.getText().toString().trim());
+        Random id=new Random();
+        int class_id=id.nextInt(1000-10) - 10;
+        int school_id=id.nextInt(10000-100) - 100;
+        kidBodyParam.setFirst_name(edfirstname.getText().toString().trim());
+        kidBodyParam.setLast_name(edlastname.getText().toString().trim());
+        kidBodyParam.setClass_name(edclassname.getText().toString().trim());
+        kidBodyParam.setSchool_name(edschoolname.getText().toString().trim());
         kidBodyParam.setLocation(edlocation.getText().toString().trim());
+        kidBodyParam.setClass_id(1);
+        kidBodyParam.setSchool_id(2);
         kidBodyParam.setUser_type("K");
+        kidBodyParam.setEmail_address(edemail.getText().toString().trim());
+        kidBodyParam.setId_number(Integer.parseInt(edidno.getText().toString().trim()));
+        kidBodyParam.setPhone_number(edphoneno.getText().toString().trim());
+        kidBodyParam.setUser_name("testuser");
+        kidBodyParam.setContact_mobile_no(edcontactno.getText().toString().trim());
 
+        customProgressBar.show(context,"");
         Retrofit retrofit= APIClient.getAPIClient(context);
 
         ApiInterface apiInterface=retrofit.create(ApiInterface.class);
 
-        Call<List<Kids>> call=apiInterface.addKid(kidBodyParam);
+        Call<JSONObject> call=apiInterface.addKid(kidBodyParam);
         
-        call.enqueue(new Callback<List<Kids>>() {
+        call.enqueue(new Callback<JSONObject>() {
             @Override
-            public void onResponse(Call<List<Kids>> call, Response<List<Kids>> response) {
+            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                customProgressBar.getDialog().dismiss();
                 if (response.isSuccessful()){
                     Toast.makeText(AddKid.this, "Success", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(context,MainActivity.class));
@@ -106,7 +127,8 @@ public class AddKid extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Kids>> call, Throwable t) {
+            public void onFailure(Call<JSONObject> call, Throwable t) {
+                customProgressBar.getDialog().dismiss();
                 Toast.makeText(AddKid.this, "Failed", Toast.LENGTH_SHORT).show();
             }
         });

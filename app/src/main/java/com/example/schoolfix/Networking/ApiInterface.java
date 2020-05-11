@@ -16,6 +16,7 @@ import com.example.schoolfix.Models.ResponseModels.SubjectResponse;
 import com.example.schoolfix.Models.User;
 
 
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -61,6 +62,6 @@ public interface ApiInterface {
 
     @Retry
     @POST("register")
-    Call<List<Kids>> addKid(
+    Call<JSONObject> addKid(
             @Body KidBodyParam kidBodyParam);
 }

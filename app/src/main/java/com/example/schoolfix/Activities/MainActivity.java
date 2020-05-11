@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
+                progressBar.getDialog().dismiss();
                 userController(response.body());
             }
 
