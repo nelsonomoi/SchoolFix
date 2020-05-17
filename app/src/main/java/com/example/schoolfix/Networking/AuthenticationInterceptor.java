@@ -21,16 +21,22 @@ public class AuthenticationInterceptor implements Interceptor {
         Request original = chain.request();
 
         Request.Builder builder = original.newBuilder();
-        if (original.header("No-Authentication") == null){
-            PreferenceManager preferenceManager=new PreferenceManager(context);
-            if(preferenceManager.fetchAuthToken("AUTH_TOKEN") != null){
-                builder.header("Authorization","Bearer "+ preferenceManager.fetchAuthToken("AUTH_TOKEN"));
-                builder.header("Accept","application/json");
-                builder.header("Content-Type","appliaction/x-www-form-urlencoded");
-            }
-        }
+
         Request request = builder.build();
 
-        return chain.proceed(request);
+        if(original.url().encodedPath().equalsIgnoreCase("register") || original.url().encodedPath().equalsIgnoreCase("login") && original.method().equalsIgnoreCase("post")){
+            return chain.proceed(request);
+        }
+        else {
+            if(original.header("No-Authentication") == null) {
+                PreferenceManager preferenceManager = new PreferenceManager(context);
+                if (preferenceManager.fetchAuthToken("AUTH_TOKEN") != null) {
+                    builder.header("Authorization", "Bearer " + preferenceManager.fetchAuthToken("AUTH_TOKEN"));
+                    builder.header("Accept", "application/json");
+                    builder.header("Content-Type", "appliaction/x-www-form-urlencoded");
+                }
+            }
+            return chain.proceed(request);
+        }
     }
 }

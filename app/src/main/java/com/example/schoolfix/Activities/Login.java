@@ -47,6 +47,7 @@ public class Login extends AppCompatActivity {
         final TextInputEditText edemail=findViewById(R.id.edEmail);
         final TextInputEditText edpassword=findViewById(R.id.edpassword);
         final MaterialButton loginbtn=findViewById(R.id.loginbtn);
+        final MaterialButton sign_up=findViewById(R.id.sign_up);
 
 //        final ProgressBar progressBar=findViewById(R.id.loading_spinner);
         final String Emailregex = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
@@ -100,6 +101,13 @@ public class Login extends AppCompatActivity {
             progressBar.show(context,"Authenticating....");
             ValidateUser(edemail.getText().toString().trim(),edpassword.getText().toString().trim());
 //                loginbtn.setEnabled(false);
+        });
+
+        sign_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context,SignUp.class));
+            }
         });
 
     }

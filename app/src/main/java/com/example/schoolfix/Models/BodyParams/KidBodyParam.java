@@ -14,6 +14,7 @@ public class KidBodyParam {
     private String phone_number;
     private int id_number;
     private String contact_mobile_no;
+    private String password;
 
     public String getUser_name() {
         return user_name;
@@ -57,6 +58,14 @@ public class KidBodyParam {
 
     public String getFirst_name() {
         return first_name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setFirst_name(String first_name) {

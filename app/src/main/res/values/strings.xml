@@ -15,7 +15,7 @@
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
 
-<!--    Kid details-->
+    <!--    Kid details-->
     <string name="firstname">Nelson</string>
     <string name="lastname">Rasugu</string>
     <string name="name_of_school">Josu Academy</string>
